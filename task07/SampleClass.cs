@@ -2,22 +2,20 @@
 
 namespace task07
 {
-    [DisplayName("Пример класса")]
+    [DisplayName("Sample class")]
     [Version(1, 0)]
     public class SampleClass
     {
-        [DisplayName("Числовое свойство")]
+        [DisplayName("Number property")]
         public int Number { get; set; }
 
-        [DisplayName("Тестовый метод")]
+        [DisplayName("Test method")]
         public void TestMethod()
         {
-            // Метод ничего не делает
         }
 
         public void MethodWithoutAttribute()
         {
-            // Метод без атрибута
         }
     }
 }
