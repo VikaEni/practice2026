@@ -12,11 +12,11 @@ public class StudentServiceTests
     {
         _students = new List<Student>
         {
-            new() { Name = "Иван", Faculty = "ФИТ", Grades = new List<int> { 5, 4, 5 } },
-            new() { Name = "Анна", Faculty = "ФИТ", Grades = new List<int> { 3, 4, 3 } },
-            new() { Name = "Петр", Faculty = "Экономика", Grades = new List<int> { 5, 5, 5 } },
-            new() { Name = "Виктория", Faculty = "Экономика", Grades = new List<int> { 3, 3, 3 } },
-            new() { Name = "Данила", Faculty = "ФИТ", Grades = new List<int> { 5, 5, 4 } }
+            new() { Name = "Ivan", Faculty = "FIT", Grades = new List<int> { 5, 4, 5 } },
+            new() { Name = "Anna", Faculty = "FIT", Grades = new List<int> { 3, 4, 3 } },
+            new() { Name = "Petr", Faculty = "Economics", Grades = new List<int> { 5, 5, 5 } },
+            new() { Name = "Victoria", Faculty = "Economics", Grades = new List<int> { 3, 3, 3 } },
+            new() { Name = "Danila", Faculty = "FIT", Grades = new List<int> { 5, 5, 4 } }
         };
         _service = new StudentService(_students);
     }
@@ -24,9 +24,9 @@ public class StudentServiceTests
     [Fact]
     public void GetStudentsByFaculty_ReturnsCorrectStudents()
     {
-        var result = _service.GetStudentsByFaculty("ФИТ").ToList();
+        var result = _service.GetStudentsByFaculty("FIT").ToList();
         Assert.Equal(3, result.Count);
-        Assert.All(result, s => Assert.Equal("ФИТ", s.Faculty));
+        Assert.All(result, s => Assert.Equal("FIT", s.Faculty));
     }
 
     [Fact]
@@ -34,20 +34,20 @@ public class StudentServiceTests
     {
         var result = _service.GetStudentsWithMinAverageGrade(4.5).ToList();
         Assert.Equal(3, result.Count);
-        Assert.Contains(result, s => s.Name == "Иван");
-        Assert.Contains(result, s => s.Name == "Петр");
-        Assert.Contains(result, s => s.Name == "Данила");
+        Assert.Contains(result, s => s.Name == "Ivan");
+        Assert.Contains(result, s => s.Name == "Petr");
+        Assert.Contains(result, s => s.Name == "Danila");
     }
 
     [Fact]
     public void GetStudentsOrderedByName_ReturnsSortedStudents()
     {
         var result = _service.GetStudentsOrderedByName().ToList();
-        Assert.Equal("Анна", result[0].Name);
-        Assert.Equal("Виктория", result[1].Name);
-        Assert.Equal("Данила", result[2].Name);
-        Assert.Equal("Иван", result[3].Name);
-        Assert.Equal("Петр", result[4].Name);
+        Assert.Equal("Anna", result[0].Name);
+        Assert.Equal("Danila", result[1].Name);
+        Assert.Equal("Ivan", result[2].Name);
+        Assert.Equal("Petr", result[3].Name);
+        Assert.Equal("Victoria", result[4].Name);
     }
 
     [Fact]
@@ -55,14 +55,14 @@ public class StudentServiceTests
     {
         var result = _service.GroupStudentsByFaculty();
         Assert.Equal(2, result.Count);
-        Assert.Equal(3, result["ФИТ"].Count());
-        Assert.Equal(2, result["Экономика"].Count());
+        Assert.Equal(3, result["FIT"].Count());
+        Assert.Equal(2, result["Economics"].Count());
     }
 
     [Fact]
     public void GetFacultyWithHighestAverageGrade_ReturnsCorrectFaculty()
     {
         var result = _service.GetFacultyWithHighestAverageGrade();
-        Assert.Equal("ФИТ", result);
+        Assert.Equal("FIT", result);
     }
 }
