@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace task14
 {
@@ -13,32 +14,21 @@ namespace task14
 
             double totalLength = b - a;
             double segmentLength = totalLength / threadsNumber;
-            double totalSum = 0.0;
+            double[] partialResults = new double[threadsNumber];
 
             using Barrier barrier = new Barrier(threadsNumber + 1);
 
             for (int i = 0; i < threadsNumber; i++)
             {
-                double segmentA = a + i * segmentLength;
-                double segmentB = (i == threadsNumber - 1) ? b : a + (i + 1) * segmentLength;
-
-                double localA = segmentA;
-                double localB = segmentB;
+                int index = i;
+                double segmentA = a + index * segmentLength;
+                double segmentB = (index == threadsNumber - 1) ? b : a + (index + 1) * segmentLength;
 
                 Thread thread = new Thread(() =>
                 {
                     try
                     {
-                        double segmentResult = CalculateTrapezoidal(localA, localB, function, step);
-
-                        double originalValue;
-                        double newValue;
-                        do
-                        {
-                            originalValue = totalSum;
-                            newValue = originalValue + segmentResult;
-                        }
-                        while (Interlocked.CompareExchange(ref totalSum, newValue, originalValue) != originalValue);
+                        partialResults[index] = CalculateTrapezoidal(segmentA, segmentB, function, step);
                     }
                     finally
                     {
@@ -50,6 +40,13 @@ namespace task14
             }
 
             barrier.SignalAndWait();
+
+            double totalSum = 0.0;
+            for (int i = 0; i < threadsNumber; i++)
+            {
+                totalSum += partialResults[i];
+            }
+
             return totalSum;
         }
 
@@ -71,6 +68,14 @@ namespace task14
             }
 
             return sum * actualStep;
+        }
+
+        public static double SolveSingleThread(double a, double b, Func<double, double> function, double step)
+        {
+            if (step <= 0) throw new ArgumentException(nameof(step));
+            if (b <= a) throw new ArgumentException(nameof(b));
+
+            return CalculateTrapezoidal(a, b, function, step);
         }
     }
 }

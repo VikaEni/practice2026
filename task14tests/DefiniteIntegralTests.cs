@@ -28,5 +28,11 @@ namespace task14tests
             double result = DefiniteIntegral.Solve(0, 5, X, 1e-6, 8);
             Assert.Equal(12.5, result, 1e-5);
         }
+
+        [Fact]
+        public void RunPerformanceAnalysis()
+        {
+            PerformanceAnalyzer.RunAnalysis();
+        }
     }
 }
