@@ -2,6 +2,10 @@ using Xunit;
 using task18;
 using System.Collections.Generic;
 using System.Threading;
+using System.IO;
+using System.Linq;
+using ScottPlot;
+using System.Drawing;
 
 namespace task18tests
 {
@@ -91,7 +95,6 @@ namespace task18tests
             }
 
             Assert.True(completed >= 3);
-
             thread.Stop();
         }
 
@@ -125,5 +128,6 @@ namespace task18tests
 
             thread.Stop();
         }
+
     }
 }
